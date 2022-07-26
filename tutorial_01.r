@@ -9,8 +9,8 @@ workingDir = "."
 setwd(workingDir)
 
 # load package
-library(WGCNA);
-
+libpath = "./renv/library/R-4.1/x86_64-w64-mingw32"
+library(WGCNA, lib.loc=libpath)
 # don't known meaning
 options(stringsAsFactors = FALSE);
 

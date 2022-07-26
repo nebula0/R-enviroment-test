@@ -10,7 +10,7 @@ library(RColorBrewer)
 library(tidyverse)
 
 rm(list = setdiff(ls(), lsf.str()))
-setwd("C:\R_CJY\edgeR_G-elata\mia")
+setwd("/Users/miachen/Desktop")
 
 # 1. Loading data -------------------------------------------------------------------------------------------
 
@@ -61,19 +61,19 @@ genes <- rownames(filtered)
 #            file="./List/Tsay-Rice-TNGTCN-root.universe-16780geneID.txt")
 
 ##Before normalization
-##轉?????????形???
+##轉換檔案形式
 set <- newSeqExpressionSet(as.matrix(filtered), 
                            phenoData = data.frame(Sample_number,Part,
                                                   row.names =colnames(filtered)))
 
 ## After normalization
-##???選上部??????活躍???數??????;上???部???異???????????????
+##挑選上部分（活躍的數值）;上－部分異動概率較低
 set1 <- betweenLaneNormalization(set, which="upper")
 
 set1
 
 #RUVs: Estimating the factors of unwanted variation using replicate samples
-##????????????知RUVs???些為一組???數?????????相似???
+##分組，告知RUVs哪些為一組（數值會較相似）
 differences<-makeGroups(Part)
 
 differences
@@ -98,7 +98,7 @@ design1 <- model.matrix(~Part+W_1,data=pData(set3))
 design1
 colnames(design1)
 
-##檔?????????
+##檔案轉換
 y <- DGEList(counts=counts(set3),group=Part)
 y <- calcNormFactors(y, method = 'TMM')
 y$samples
@@ -106,14 +106,14 @@ y$samples
 y<-estimateDisp(y,design1,robust = T)
 y$common.dispersion #0.01538511
 
-##檔????????????可??????edgeR??????
+##檔案轉換，可查看edgeR手冊
 fit <-glmQLFit(y, design1)
 
-##???選??????趣之性???
+##挑選感興趣之性狀
 colnames(design1)
 qlf<-glmQLFTest(fit,coef=2)
 
-##將???????????????table
+##將檔案轉換成table
 top <- topTags(qlf, n=nrow(set3))$table
 
 ###filter
@@ -125,7 +125,5 @@ de.gene<-rownames(de)
 de.geneinfo<-de$table
 
 #write.table(de.gene, quote=F, row.names = F, col.names = F,sep="\t",
-            file="GelataTuber_7179.txt")
-sessionInfo()
-"GO.db" %in% rownames(installed.packages())
-                      
+            file=("GelataTuber_7179.txt")
+
